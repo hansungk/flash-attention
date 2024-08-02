@@ -13,7 +13,7 @@ def parse():
     batchsize = int(sys.argv[1])
     seqlen = int(sys.argv[2])
     headdim = int(sys.argv[3])
-    causal = bool(sys.argv[3])
+    causal = (sys.argv[4] == "True")
     return batchsize, seqlen, headdim, causal
 
 
@@ -39,5 +39,7 @@ if __name__ == "__main__":
 
     # forward-pass only
     print(f"executing flash_attn_func() with batchsize={batchsize}, seqlen={seqlen}, nheads={nheads}, headdim={headdim}, causal={causal}")
-    out = flash_attn_func(q, k, v, causal=causal)
+    repeats = 3
+    for i in range(repeats):
+        out = flash_attn_func(q, k, v, causal=causal)
     # print(out)
